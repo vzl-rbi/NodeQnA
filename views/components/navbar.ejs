@@ -1,0 +1,16 @@
+<nav class="navbar">
+  <div class="nav-container">
+    <a href="#" class="logo">Digital<span>Pathshala</span></a>
+    <ul class="nav-links">
+      <li><a href="/">Home</a></li>
+      <% if(authenticatedToken) { %>
+      <li><a href="/askquestion">Ask Question</a></li>
+      <li><a href="/logout">Logout</a></li>
+
+      <% } else { %>
+      <li><a href="/askquestion">Ask Question</a></li>
+      <li><a href="/login">Login</a></li>
+      <% } %>
+    </ul>
+  </div>
+</nav>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login - Simple Form</title>
+    <link rel="stylesheet" href="login.css" />
+  </head>
+  <body>
+    <!-- Navigation Bar -->
+    <%- include('../components/navbar.ejs') %>
+    <!-- Login Form -->
+    <div class="form-container">
+      <div class="form-card">
+        <h2 class="form-title">Account Login</h2>
+        <strong style="color: green"><%- success %></strong>
+        <form action="/login" method="post">
+          <strong style="color: red"><%- errors %></strong>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              placeholder="you@example.com"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              placeholder="••••••••"
+              required
+              minlength="6"
+            />
+          </div>
+
+          <button type="submit" class="submit-btn">Login</button>
+        </form>
+
+        <div class="extra-links">
+          <p>
+            Don't have an account?
+            <a href="/register">Register here</a>
+          </p>
+          <p>
+            <a href="/forgotPassword">Forgot password?</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
