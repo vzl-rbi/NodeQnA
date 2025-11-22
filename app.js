@@ -11,6 +11,8 @@ const PORT = 8000;
 import session from "express-session";
 import flash from "connect-flash";
 import { catchError } from "./utils/catchError.js";
+import { answers } from "./model/index.js";
+import { Server } from "socket.io";
 
 // View Engine
 app.set("view engine", "ejs");
@@ -64,6 +66,23 @@ app.use((req, res) => {
 });
 
 // Server
-app.listen(PORT, () =>
+const server = app.listen(PORT, () =>
   console.log(`Server running at http://localhost:${PORT}`)
 );
+const io = new Server(server, {
+  cors: {
+    origin: "*",
+  },
+});
+
+io.on("connection", (socket) => {
+  socket.on("like", async (id) => {
+    const answer = await answers.findByPk(id);
+    if (answer) {
+      answer.likes += 1;
+      await answer.save();
+
+      socket.emit("likeUpdate", answer.likes);
+    }
+  });
+});

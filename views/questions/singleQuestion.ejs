@@ -144,6 +144,11 @@
               >Posted on: <%- new Date(data[0].createdAt).toLocaleDateString()
               %></i
             >
+            <br />
+            <span id="likes"></span
+            ><button onclick="likePost(<%- answer.id %>)">Like</button>
+
+            <% }) %>
           </a>
           <div class="question-card">
             <b>Answers:</b>
@@ -168,5 +173,20 @@
         </div>
       </div>
     </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      const socket = io();
+      console.log("Client connected to server");
+
+      const likePost = (answerId) => {
+        console.log("Triggered", answerId);
+        socket.emit("like", answerId);
+      };
+
+      socket.on("likeUpdate", (likeCount) => {
+        const likesElement = document.getElementById("likes");
+        likesElement.textContent = likeCount;
+      });
+    </script>
   </body>
 </html>
