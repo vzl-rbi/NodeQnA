@@ -11,9 +11,8 @@ const PORT = 8000;
 import session from "express-session";
 import flash from "connect-flash";
 import { catchError } from "./utils/catchError.js";
-import { answers } from "./model/index.js";
 import { Server } from "socket.io";
-
+import { answers } from "./model/index.js";
 // View Engine
 app.set("view engine", "ejs");
 

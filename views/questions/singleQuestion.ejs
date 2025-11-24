@@ -144,11 +144,6 @@
               >Posted on: <%- new Date(data[0].createdAt).toLocaleDateString()
               %></i
             >
-            <br />
-            <span id="likes"></span
-            ><button onclick="likePost(<%- answer.id %>)">Like</button>
-
-            <% }) %>
           </a>
           <div class="question-card">
             <b>Answers:</b>
@@ -160,6 +155,9 @@
                 >Posted on: <%- new Date(data[0].createdAt).toLocaleDateString()
                 %></i
               >
+              <br />
+              <span id="likes"></span
+              ><button onclick="likePost(<%- answer.id %>)">Like</button>
 
               <% }) %>
             </a>

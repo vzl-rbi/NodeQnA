@@ -56,35 +56,6 @@ export const handleRegister = async (req, res) => {
   });
 
   return res.redirect("/login");
-  //below code is in trycatch. Handled by errorCatch.js from utils
-  /*
-  try {
-    const exists = await users.findOne({ where: { email } });
-
-    if (exists) {
-      // return res.send("Email already registered.");
-      req.flash("error", "Email already registered.");
-      return res.redirect("/register");
-    } else {
-      await sendEmail({
-        email: email,
-        text: "Thank You for registering!!",
-        subject: "Welcome to Node.js Project",
-      });
-    }
-    const hashPassword = await bcrypt.hash(password, 10);
-    await users.create({
-      username,
-      email,
-      password: hashPassword,
-    });
-
-    return res.redirect("/login");
-  } catch (err) {
-    console.error("DB ERROR:", err);
-    return res.send("Something went wrong.");
-  }
-    */
 };
 
 // Login
@@ -123,43 +94,6 @@ export const handlerLogin = async (req, res) => {
   // return res.redirect("/");
   req.flash("success", "Logged in Successfully");
   return res.redirect("/");
-
-  /*
-  try {
-    const user = await users.findOne({ where: { email } });
-
-    if (!user) {
-      // return res.send("Invalid credentials.");
-      req.flash("error", "Invalid Email or Password!!");
-      return res.redirect("/login");
-    }
-
-    const isMatched = await bcrypt.compare(password, user.password);
-
-    if (!isMatched) {
-      // return res.send("Invalid credentials.");
-      req.flash("error", "Invalid Password!!");
-      return res.redirect("/login");
-    }
-
-    const token = jwt.sign(
-      { id: user.id },
-      process.env.JWT_SECRET || "superweak-secret",
-      {
-        expiresIn: "30d",
-      }
-    );
-
-    res.cookie("jwtToken", token, { httpOnly: true });
-
-    // return res.redirect("/askquestion");
-    req.flash("success", "Logged in Successfully");
-    return res.redirect("/");
-  } catch (err) {
-    console.error("DB ERROR:", err);
-    return res.send("Something went wrong.");
-  }
-  */
 };
 
 export const renderForgotPasswordPage = (req, res) => {

@@ -7,12 +7,11 @@ import {
 import multer from "multer";
 import { storage } from "../middleware/multerConfig.js";
 import { isAuthenticated } from "../middleware/isAuthenticated.js";
-import { catchError } from "../utils/catchError.js";
 
 export const questionRouter = express.Router();
 const upload = multer({ storage: storage });
 questionRouter
   .route("/askquestion")
-  .get(catchError(isAuthenticated), catchError(renderAskQuestions))
-  .post(catchError(isAuthenticated), upload.single("image"), askQuestion);
-questionRouter.route("/question/:id").get(catchError(renderSingleQuestionPage));
+  .get(isAuthenticated, renderAskQuestions)
+  .post(isAuthenticated, upload.single("image"), askQuestion);
+questionRouter.route("/question/:id").get(renderSingleQuestionPage);
