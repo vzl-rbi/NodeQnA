@@ -9,7 +9,7 @@ import { answerModel } from "./answerModel.js";
 const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
   host: dbConfig.HOST,
   dialect: dbConfig.dialect,
-  port: 3306,
+  port: 53799, // mysql-> setting -> switchyard.proxy.rlwy.net:53799// railway
   pool: dbConfig.pool,
   logging: false,
 });

@@ -116,6 +116,7 @@
       }
     </style>
   </head>
+
   <body>
     <%- include("../components/navbar.ejs") %>
 
@@ -127,12 +128,14 @@
 
       <div class="questions-grid">
         <div class="question-card">
-          <b>Questions:</b>
+          <b>Question:</b>
           <a style="text-decoration: none; color: inherit">
             <h3 class="question-title"><%- data[0].title %></h3>
+
             <p class="question-desc"><%- data[0].description %></p>
+
             <img
-              src="http://localhost:8000/<%- data[0].image %>"
+              src="<%- data[0].image %>"
               alt="Question Image"
               height="200"
               width="200"
@@ -145,45 +148,55 @@
               %></i
             >
           </a>
-          <div class="question-card">
-            <b>Answers:</b>
-            <a style="text-decoration: none; color: inherit">
-              <% answers.forEach((answer) => { %>
-              <h4 class="answer-title"><%- answer.answerText %></h4>
-              <i>Author: <%- answer.user.username %></i><br />
-              <i
-                >Posted on: <%- new Date(data[0].createdAt).toLocaleDateString()
-                %></i
-              >
-              <br />
-              <span id="likes"></span
-              ><button onclick="likePost(<%- answer.id %>)">Like</button>
+        </div>
 
-              <% }) %>
-            </a>
+        <!-- ANSWERS BLOCK -->
+        <div class="question-card">
+          <b>Answers:</b>
+
+          <% answers.forEach((answer) => { %>
+          <div style="margin-bottom: 1rem">
+            <h4 class="answer-title"><%- answer.answerText %></h4>
+
+            <i>Author: <%- answer.user.username %></i><br />
+            <i
+              >Posted on: <%- new Date(answer.createdAt).toLocaleDateString()
+              %></i
+            >
+            <br /><br />
+
+            <span id="likes_<%- answer.id %>"><%- answer.likes %></span>
+            <button onclick="likePost(<%= answer.id %>)">Like</button>
           </div>
-          <div class="question-card">
-            <form action="/answer/<%- data[0].id %>" method="post">
-              <textarea name="answer" id="" cols="30" rows="3"></textarea>
-              <button>Submit</button>
-            </form>
-          </div>
+          <% }) %>
+        </div>
+
+        <!-- ADD ANSWER -->
+        <div class="question-card">
+          <form action="/answer/<%- data[0].id %>" method="post">
+            <textarea name="answer" cols="30" rows="3"></textarea>
+            <button>Submit</button>
+          </form>
         </div>
       </div>
     </div>
+
+    <!-- SOCKET.IO SCRIPT -->
     <script src="/socket.io/socket.io.js"></script>
     <script>
       const socket = io();
-      console.log("Client connected to server");
+      const cookie = document.cookie.split("=");
 
       const likePost = (answerId) => {
-        console.log("Triggered", answerId);
-        socket.emit("like", answerId);
+        socket.emit("like", {
+          answerId,
+          cookie: cookie[1],
+        });
       };
 
-      socket.on("likeUpdate", (likeCount) => {
-        const likesElement = document.getElementById("likes");
-        likesElement.textContent = likeCount;
+      socket.on("likeUpdate", ({ answerId, likesCount }) => {
+        const likesElement = document.getElementById(`likes_${answerId}`);
+        likesElement.textContent = likesCount;
       });
     </script>
   </body>

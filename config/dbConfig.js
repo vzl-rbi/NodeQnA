@@ -1,8 +1,8 @@
 export const dbConfig = {
-  HOST: "localhost",
+  HOST: "switchyard.proxy.rlwy.net",
   USER: "root",
-  PASSWORD: "",
-  DB: "learningNodeJs",
+  PASSWORD: "ReDWpGhmneMBzpUKeRhnCksnPeknwYky",
+  DB: "railway",
   dialect: "mysql",
   pool: {
     max: 5,
