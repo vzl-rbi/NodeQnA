@@ -8,7 +8,7 @@ export const sendEmail = async (data) => {
     },
   });
   const mailOption = {
-    from: `"Nodejs Learning"<nodejs39@gmail.com>`,
+    from: `"Nodejs Learning"<screwup39@gmail.com>`,
     to: data.email,
     subject: data.subject,
     text: data.text,

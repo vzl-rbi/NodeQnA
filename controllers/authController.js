@@ -30,34 +30,53 @@ export const renderLoginPage = (req, res) => {
 
 // Register
 export const handleRegister = async (req, res) => {
-  const { username, email, password } = req.body;
+  try {
+    const { username, email, password } = req.body;
 
-  if (!username || !email || !password) {
-    return res.send("All fields are required.");
-  }
-  const exists = await users.findOne({ where: { email } });
+    // 1️⃣ Validate input
+    if (!username || !email || !password) {
+      req.flash("error", "All fields are required.");
+      return res.redirect("/register");
+    }
 
-  if (exists) {
-    // return res.send("Email already registered.");
-    req.flash("error", "Email already registered.");
-    return res.redirect("/register");
-  } else {
-    await sendEmail({
-      email: email,
-      text: "Thank You for registering!!",
-      subject: "Welcome to Node.js Project",
+    // 2️⃣ Check if email already exists
+    const exists = await users.findOne({ where: { email } });
+    if (exists) {
+      req.flash("error", "Email already registered.");
+      return res.redirect("/register");
+    }
+
+    // 3️⃣ Hash the password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // 4️⃣ Create the user
+    const newUser = await users.create({
+      username,
+      email,
+      password: hashedPassword,
     });
+
+    // 5️⃣ Send welcome email (optional, errors won’t block registration)
+    try {
+      await sendEmail({
+        email: newUser.email,
+        subject: "Welcome to NodeQnA!",
+        text: `Hi ${newUser.username}, your account was created successfully!`,
+      });
+      console.log("Welcome email sent to", newUser.email);
+    } catch (err) {
+      console.error("Email sending failed:", err);
+    }
+
+    // 6️⃣ Redirect to login page
+    req.flash("success", "Registration successful! Please log in.");
+    return res.redirect("/login");
+  } catch (err) {
+    console.error("Registration error:", err);
+    req.flash("error", "Something went wrong. Please try again.");
+    return res.redirect("/register");
   }
-  const hashPassword = await bcrypt.hash(password, 10);
-  await users.create({
-    username,
-    email,
-    password: hashPassword,
-  });
-
-  return res.redirect("/login");
 };
-
 // Login
 export const handlerLogin = async (req, res) => {
   const { email, password } = req.body;
