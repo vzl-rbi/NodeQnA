@@ -48,15 +48,16 @@ export const renderSingleQuestionPage = async (req, res) => {
       },
     ],
   });
-  let likes;
   let count = 0;
   try {
-    likes = await sequelize.query(`SELECT * FROM likes_${id}`, {
-      type: QueryTypes.SELECT,
-    });
-    if (likes.length) {
-      count = likes.length;
-    }
+    const likes = await sequelize.query(
+      "SELECT COUNT(*) AS total FROM likes WHERE questionId = ?",
+      {
+        type: QueryTypes.SELECT,
+        replacements: [id],
+      }
+    );
+    count = likes[0].total;
   } catch (error) {
     console.log(error);
   }
