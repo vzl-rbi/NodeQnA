@@ -108,7 +108,7 @@ export const handlerLogin = async (req, res) => {
     }
   );
 
-  res.cookie("jwtToken", token, { httpOnly: true });
+  res.cookie("jwtToken", token);
 
   // return res.redirect("/");
   req.flash("success", "Logged in Successfully");
