@@ -11,6 +11,7 @@ export const askQuestion = async (req, res) => {
   console.log(req.file);
   const userId = req.userId;
   const fileName = req.file.filename;
+  const username = req.username;
   // Upload to Cloudinary
   const result = await cloudinary.uploader.upload(req.file.path);
   // Cloudinary URL
@@ -25,6 +26,7 @@ export const askQuestion = async (req, res) => {
     image: imageUrl,
     userId,
   });
+  req.flash("success", `${username}'s question is uploaded successfully!!`);
   res.redirect("/");
 };
 export const getAllQuestion = async (req, res) => {

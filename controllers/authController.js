@@ -111,7 +111,8 @@ export const handlerLogin = async (req, res) => {
   res.cookie("jwtToken", token);
 
   // return res.redirect("/");
-  req.flash("success", "Logged in Successfully");
+  // req.flash("success", "Logged in Successfully");
+  req.flash("success", ` Hey ${user.username}, Welcome to Q & A Community!!`);
   return res.redirect("/");
 };
 

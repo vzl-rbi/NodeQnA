@@ -29,6 +29,7 @@ export const isAuthenticated = async (req, res, next) => {
 
     // Save user ID to request
     req.userId = user.id;
+    req.username = user.username;
 
     // Log neatly (this shows in terminal)
     console.log("✅ Authenticated User ID:", req.userId);
